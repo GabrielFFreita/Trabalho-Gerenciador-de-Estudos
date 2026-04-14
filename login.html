@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro/Login</title>
+</head>
+<body>
+    <div id="modalLogin" class="modal">
+        <div class="modal-box">
+            <h2 class="modal-title" id="modalTitle">Cadastro:</h2>
+
+            <div id="formCadastro" style="display: block;">
+                <form id="cadastroForm" action="/" method="post">
+                    <div class="form-group">
+                        <label for="nome">Nome Completo</label>
+                        <input type="text" class="form-control" id="nome" name="nome" required>
+                        <span class="error-msg" id="nomeError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">E-mail</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                        <span class="error-msg" id="emailError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="senha">Senha</label>
+                        <input type="password" class="form-control" id="senha" name="senha" required>
+                        <span class="info-msg">Mínimo de 6 caracteres, com letras e números.</span>
+                        <span class="error-msg" id="senhaError"></span>
+                    </div>
+
+                    <p class="success" id="cadastroSuccess" style="display: none;"></p>
+                    <button type="submit" class="btn" id="btnCadastro">Cadastrar</button>
+                </form>
+
+                <div class="footer-modal">
+                    Já tem conta? <a href="#" class="link" onclick="alternarFormulario('login')">Faça Login</a>
+                </div>
+            </div>
+
+            <div id="formLogin" style="display: none;">
+                <form id="loginForm" action="/login" method="post">
+                    <div class="form-group">
+                        <label for="loginEmail">E-mail</label>
+                        <input type="email" class="form-control" id="loginEmail" name="loginEmail" required>
+                        <span class="error-msg" id="loginEmailError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="loginSenha">Senha</label>
+                        <input type="password" class="form-control" id="loginSenha" name="loginSenha" required>
+                        <span class="error-msg" id="loginSenhaError"></span>
+                    </div>
+
+                    <p class="success" id="loginSuccess" style="display: none;"></p>
+                    <button type="submit" class="btn" id="btnLogin">Entrar</button>
+                </form>
+
+                <div class="forgot">
+                    <a href="#" class="link" onclick="alert('Funcionalidade de recuperação de senha em desenvolvimento.')">Esqueceu a senha?</a>
+                </div>
+
+                <div class="footer-modal">
+                    Não tem conta? <a href="#" class="link" onclick="alternarFormulario('cadastro')">Crie sua Conta</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
