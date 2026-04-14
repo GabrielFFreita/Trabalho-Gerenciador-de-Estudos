@@ -36,36 +36,10 @@
                     <i class="fas fa-heart"></i>
                     <span>Adote Vida</span>
                 </button>
-                <div id="acaoLogin" class="acao-cabecalho" onclick="abrirLogin()">
-                    <i class="far fa-user"></i>
-                    <span>Login</span>
-                </div>
-                <div class="acao-cabecalho hidden" id="botaoLogout" onclick="fazerLogout()">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Sair</span>
-                </div>
+        
             </div>
         </div>
         
-        <nav class="navegacao-principal">
-            <div class="container-navegacao">
-                <ul class="menu-navegacao">
-                    <li class="item-navegacao">
-                        <a href="#" class="link-navegacao">Rações PetVida</a>
-                        <div class="menu-suspenso">
-                            <a href="#" class="item-menu-suspenso">Cães Adultos</a>
-                            <a href="#" class="item-menu-suspenso">Cães Filhotes</a>
-                            <a href="#" class="item-menu-suspenso">Gatos Adultos</a>
-                            <a href="#" class="item-menu-suspenso">Gatos Filhotes</a>
-                            <a href="#" class="item-menu-suspenso">Raças Específicas</a>
-                        </div>
-                    </li>
-                    <li class="item-navegacao">
-                        <a href="#" class="link-navegacao">Petiscos</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
     </header>
 
     <section class="banner-principal">
@@ -79,14 +53,6 @@
                 <button class="botao-banner">Ver Rações</button>
             </div>
         </div>
-
-        <!-- Controles do Carrossel -->
-        <button class="controle-banner controle-anterior">
-            <i class="fas fa-chevron-left"></i>
-        </button>
-        <button class="controle-banner controle-proximo">
-            <i class="fas fa-chevron-right"></i>
-        </button>
 
     <section class="secao-servicos">
         <div class="container-sobre">
@@ -196,101 +162,10 @@
                 </div>
             </div>
 
-    <footer class="rodape-principal">
-        <div class="conteudo-rodape">
-            <div class="coluna-rodape">
-                <h3>Pet Vida</h3>
-                <p>O melhor para o seu pet, desde 2010.</p>
-                <p><i class="fas fa-map-marker-alt"></i> Rua dos Pets Felizes, 123</p>
-                <p><i class="fas fa-phone"></i> (47) 9876-5432</p>
-                <p><i class="fas fa-envelope"></i> contato@petvida.com.br</p>
-                <div class="links-sociais">
-                    <a href="#" class="link-social"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="link-social"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="link-social"><i class="fab fa-twitter"></i></a>
-                </div>
-            </div>
-
         <div class="rodape-inferior">
             &copy; 2024 Pet Vida. Todos os direitos reservados.
         </div>
     </footer>
 
-    <!-- MODAL DE CADASTRO/LOGIN -->
-    <div id="modalLogin" class="modal">
-        <div class="modal-box">
-            <button class="close" onclick="fecharModal('modalLogin')">&times;</button>
-            <h2 class="modal-title" id="modalTitle">Crie sua Conta na Pet Vida</h2>
-
-            <!-- FORMULÁRIO DE CADASTRO -->
-            <div id="formCadastro" style="display: block;">
-                <form id="cadastroForm" action="/" method="post">
-                    <div class="form-group">
-                        <label for="nome">Nome Completo</label>
-                        <input type="text" class="form-control" id="nome" name="nome" required>
-                        <span class="error-msg" id="nomeError"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="email">E-mail</label>
-                        <input type="email" class="form-control" id="email" name="email" required>
-                        <span class="error-msg" id="emailError"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="idade">Idade</label>
-                        <input type="number" id="idade" name="idade" class="form-control" placeholder="Sua idade" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="telefone">Telefone</label>
-                        <input type="tel" id="telefone" name="telefone" class="form-control" placeholder="(XX) XXXXX-XXXX" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="senha">Senha</label>
-                        <input type="password" class="form-control" id="senha" name="senha" required>
-                        <span class="info-msg">Mínimo de 6 caracteres, com letras e números.</span>
-                        <span class="error-msg" id="senhaError"></span>
-                    </div>
-
-                    <p class="success" id="cadastroSuccess" style="display: none;"></p>
-                    <button type="submit" class="btn" id="btnCadastro">Cadastrar</button>
-                </form>
-
-                <div class="footer-modal">
-                    Já tem conta? <a href="#" class="link" onclick="alternarFormulario('login')">Faça Login</a>
-                </div>
-            </div>
-
-            <!-- FORMULÁRIO DE LOGIN -->
-            <div id="formLogin" style="display: none;">
-                <form id="loginForm" action="/login" method="post">
-                    <div class="form-group">
-                        <label for="loginEmail">E-mail</label>
-                        <input type="email" class="form-control" id="loginEmail" name="loginEmail" required>
-                        <span class="error-msg" id="loginEmailError"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="loginSenha">Senha</label>
-                        <input type="password" class="form-control" id="loginSenha" name="loginSenha" required>
-                        <span class="error-msg" id="loginSenhaError"></span>
-                    </div>
-
-                    <p class="success" id="loginSuccess" style="display: none;"></p>
-                    <button type="submit" class="btn" id="btnLogin">Entrar</button>
-                </form>
-
-                <div class="forgot">
-                    <a href="#" class="link" onclick="alert('Funcionalidade de recuperação de senha em desenvolvimento.')">Esqueceu a senha?</a>
-                </div>
-
-                <div class="footer-modal">
-                    Não tem conta? <a href="#" class="link" onclick="alternarFormulario('cadastro')">Crie sua Conta</a>
-                </div>
-            </div>
-        </div>
-    </div>
 </body>
 </html>
