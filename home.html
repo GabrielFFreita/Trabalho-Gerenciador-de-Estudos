@@ -7,6 +7,7 @@
   <!-- Google Fonts + Font Awesome 6 -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="/css/style.css">
   <style>
     * {
       margin: 0;
@@ -360,99 +361,106 @@
       height: 12px;
     }
     .progress-fill {
+      width: 120px;
       background: #3b82f6;
       width: 0%;
       height: 100%;
       border-radius: 60px;
     }
 
-    /* CRONÔMETRO FLUTUANTE */
-    .timer-float {
-      position: fixed;
-      bottom: 28px;
-      right: 28px;
-      background: white;
-      border-radius: 48px;
-      box-shadow: 0 20px 35px -8px rgba(0, 0, 0, 0.2);
-      padding: 1rem 1.5rem;
-      width: 300px;
-      z-index: 1000;
-      backdrop-filter: blur(4px);
-      border: 1px solid rgba(59,130,246,0.3);
-      transition: 0.2s;
-    }
-    .timer-header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 700;
-      color: #1e3a8a;
+    
+    .cronometro-sidebar {
+      background: rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 1rem;
+      margin-top: 20px;
+      text-align: center;
+  }
+  
+  .cabecalho-cronometro {
+      font-weight: bold;
       margin-bottom: 10px;
-    }
-    .timer-display {
-      font-size: 2rem;
-      font-weight: 800;
+  }
+  
+  .mostrador-cronometro {
+      font-size: 1.8rem;
       font-family: monospace;
-      letter-spacing: 2px;
-      text-align: center;
-      background: #f1f5f9;
-      padding: 8px;
-      border-radius: 40px;
-    }
-    .timer-controls {
+      background: rgba(0,0,0,0.4);
+      padding: 10px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+  }
+  
+  .controles-cronometro {
       display: flex;
-      gap: 8px;
-      margin: 12px 0;
-    }
-    .timer-controls input {
+      gap: 5px;
+  }
+  
+  .botao-cronometro {
       flex: 1;
-      padding: 8px;
-      border-radius: 40px;
-      border: 1px solid #cbd5e1;
-      text-align: center;
-    }
-    .timer-btn {
+      width: 70px;
       background: #3b82f6;
       border: none;
-      padding: 6px 12px;
-      border-radius: 32px;
+      border-radius: 1px;
       color: white;
-      font-weight: bold;
       cursor: pointer;
-    }
-    .timer-btn.reset { background: #475569; }
-    @media (max-width: 780px) {
-      .sidebar { width: 100%; height: auto; flex-direction: row; flex-wrap: wrap; padding: 1rem; gap: 1rem; }
-      .main { padding: 1rem; }
-      .timer-float { width: 260px; bottom: 16px; right: 16px; }
-      .calendar-grid { gap: 4px; }
-      .calendar-day { min-height: 65px; padding: 6px; }
-    }
-    footer { text-align: center; margin-top: 1rem; font-size: 0.7rem; color: #8ba0bc; }
-    .toast-msg {
-      position: fixed; bottom: 100px; right: 30px; background: #0f2b4d; color: white;
-      padding: 12px 20px; border-radius: 60px; font-weight: 500; z-index: 1100;
-      box-shadow: 0 6px 14px black(0,0,0,0.2);
-    }
+  }
+  
+  .botao-cronometro.reiniciar {
+      background: #475569;
+  }
+  .minutosCronometro{
+    width: 120px;
+  }
   </style>
 </head>
 <body>
 
-<div class="sidebar">
-  <div class="logo-area">
-    <div class="logo-icon"><i class="fas fa-brain"></i></div>
-    <h2>SmartStudy</h2>
+  <div class="sidebar">
+
+    <div class="logo-area">
+      <div class="logo-icon"><i class="fas fa-brain"></i></div>
+      <h2>SmartStudy</h2>
+    </div>
+  
+    <nav>
+      <ul>
+        <li><i class="fas fa-tachometer-alt"></i> Dashboard</li>
+        <li><i class="fas fa-calendar-alt"></i> Agenda</li>
+        <li><i class="fas fa-check-double"></i> Tarefas</li>
+        <li><i class="fas fa-chart-line"></i> Desempenho</li>
+      </ul>
+    </nav>
+  
+    <!-- ✅ CRONÔMETRO AQUI (DEPOIS DO MENU) -->
+    <div class="cronometro-sidebar">
+  
+      <div class="cabecalho-cronometro">
+          <i class="fas fa-hourglass-start"></i> Cronômetro
+      </div>
+  
+      <div class="mostrador-cronometro" id="mostradorCronometro">25:00</div>
+  
+      <div class="controles-cronometro">
+          <input type="number" id="minutosCronometro" value="25" min="1">
+  
+          <button id="botaoIniciarCronometro" class="botao-cronometro">
+              ▶
+          </button>
+  
+          <button id="botaoReiniciarCronometro" class="botao-cronometro reiniciar">
+              ↻
+          </button>
+      </div>
+  
+    </div>
+  
+    <!-- RODAPÉ -->
+    <div style="margin-top: auto; font-size: 0.7rem; opacity: 0.6;">
+      <i class="fas fa-graduation-cap"></i> foco & evolução
+    </div>
+  
   </div>
-  <nav>
-    <ul>
-      <li><i class="fas fa-tachometer-alt"></i> Dashboard</li>
-      <li><i class="fas fa-calendar-alt"></i> Agenda</li>
-      <li><i class="fas fa-check-double"></i> Tarefas</li>
-      <li><i class="fas fa-chart-line"></i> Desempenho</li>
-    </ul>
-  </nav>
-  <div style="margin-top: auto; font-size: 0.7rem; opacity: 0.6;"><i class="fas fa-graduation-cap"></i> foco & evolução</div>
-</div>
 
 <div class="main">
   <div class="header-welcome">
@@ -514,7 +522,7 @@
   <footer>SmartStudy · dados salvos localmente | Cronômetro flutuante</footer>
 </div>
 
-<!-- CRONÔMETRO FLUTUANTE -->
+<!-- CRONÔMETRO FLUTUANTE
 <div class="timer-float">
   <div class="timer-header"><i class="fas fa-hourglass-start"></i> Cronômetro de foco</div>
   <div class="timer-display" id="timerDisplay">00:00</div>
@@ -523,290 +531,17 @@
     <button id="startTimerBtn" class="timer-btn"><i class="fas fa-play"></i> Iniciar</button>
     <button id="resetTimerBtn" class="timer-btn reset"><i class="fas fa-undo-alt"></i></button>
   </div>
-</div>
+</div> -->
 
-<script>
-  // ---------- DADOS GLOBAIS ----------
-  let tasks = [];                // {id, text, completed}
-  let totalHours = 0;
-  let todayHours = 0;
-  let weekHours = [0,0,0,0,0,0,0];
-  let lastDateTrack = "";
-
-  // calendário & lembretes: { "YYYY-MM-DD": [ "lembrete1", "lembrete2" ] }
-  let reminders = {};
-  let currentYear = new Date().getFullYear();
-  let currentMonth = new Date().getMonth(); // 0-11
-  let selectedDateStr = "";  // formato YYYY-MM-DD
-
-  // Timer
-  let timerInterval = null;
-  let remainingSeconds = 0;
-  let isTimerRunning = false;
-
-  // DOM elements
-  const totalHorasSpan = document.getElementById("totalHorasDisplay");
-  const hojeHorasSpan = document.getElementById("hojeHorasDisplay");
-  const tarefasConcluidasSpan = document.getElementById("tarefasConcluidasCount");
-  const totalTarefasSpan = document.getElementById("totalTarefasCount");
-  const listaContainer = document.getElementById("listaTarefas");
-  const progressFillDiv = document.getElementById("progressFillBar");
-  const percentualSpan = document.getElementById("percentualProgresso");
-
-  // helpers
-  function formatHours(decHours) {
-    let hrs = Math.floor(decHours);
-    let mins = Math.round((decHours - hrs) * 60);
-    if (hrs === 0 && mins === 0) return "0h";
-    if (hrs === 0) return `${mins}min`;
-    if (mins === 0) return `${hrs}h`;
-    return `${hrs}h ${mins}min`;
-  }
-
-  function updateHoursUI() {
-    totalHorasSpan.innerText = formatHours(totalHours);
-    hojeHorasSpan.innerText = formatHours(todayHours);
-  }
-
-  // GRÁFICO SEMANAL
-  function renderWeeklyGraph() {
-    const container = document.getElementById("weeklyBars");
-    const dias = ["SEG", "TER", "QUA", "QUI", "SEX", "SÁB", "DOM"];
-    const maxHoras = Math.max(...weekHours, 0.1);
-    container.innerHTML = "";
-    for (let i=0; i<weekHours.length; i++) {
-      let percent = maxHoras === 0 ? 0 : (weekHours[i] / maxHoras) * 100;
-      const barItem = document.createElement("div");
-      barItem.className = "bar-item";
-      barItem.innerHTML = `<div class="bar-bg"><div class="bar-fill" style="height: ${percent}%;"></div></div>
-        <div class="day-label">${dias[i]}</div><div class="hours-value">${weekHours[i].toFixed(1)}h</div>`;
-      container.appendChild(barItem);
-    }
-  }
-
-  // reset diário
-  function checkDailyReset() {
-    const todayStr = new Date().toISOString().slice(0,10);
-    if (lastDateTrack !== todayStr) {
-      todayHours = 0;
-      lastDateTrack = todayStr;
-      saveDataToLocal();
-      updateHoursUI();
-    }
-  }
-
-  function addStudyMinutes(minutes) {
-    if (minutes <= 0) return;
-    const hoursToAdd = minutes / 60;
-    totalHours += hoursToAdd;
-    todayHours += hoursToAdd;
-    let currentDay = new Date().getDay();
-    let weekIndex = (currentDay === 0) ? 6 : currentDay - 1;
-    weekHours[weekIndex] += hoursToAdd;
-    updateHoursUI();
-    renderWeeklyGraph();
-    saveDataToLocal();
-    showToast(`✅ +${minutes} min registrados!`);
-  }
-
-  // TAREFAS
-  function renderTasks() {
-    if (tasks.length === 0) {
-      listaContainer.innerHTML = `<li class="empty-tasks" style="text-align:center; padding:1rem;">📭 Nenhuma tarefa</li>`;
-      totalTarefasSpan.innerText = "0";
-      tarefasConcluidasSpan.innerText = "0";
-      updateGlobalProgress();
-      return;
-    }
-    let completedCount = 0;
-    listaContainer.innerHTML = "";
-    tasks.forEach(task => {
-      if (task.completed) completedCount++;
-      const li = document.createElement("li");
-      li.className = "task-item";
-      li.innerHTML = `
-        <div class="task-left">
-          <input type="checkbox" class="task-checkbox" ${task.completed ? "checked" : ""}>
-          <span class="task-text ${task.completed ? "completed-task" : ""}">${escapeHtml(task.text)}</span>
-        </div>
-        <div class="task-actions">
-          <button class="edit-task-btn" title="Editar"><i class="fas fa-pen"></i></button>
-          <button class="delete-task-btn" title="Excluir"><i class="fas fa-trash-alt"></i></button>
-        </div>
-      `;
-      const chk = li.querySelector(".task-checkbox");
-      chk.addEventListener("change", () => { task.completed = chk.checked; renderTasks(); saveDataToLocal(); });
-      li.querySelector(".edit-task-btn").addEventListener("click", () => {
-        let newT = prompt("Editar tarefa:", task.text);
-        if (newT?.trim()) { task.text = newT.trim(); renderTasks(); saveDataToLocal(); }
-      });
-      li.querySelector(".delete-task-btn").addEventListener("click", () => { tasks = tasks.filter(t => t.id !== task.id); renderTasks(); saveDataToLocal(); });
-      listaContainer.appendChild(li);
-    });
-    totalTarefasSpan.innerText = tasks.length;
-    tarefasConcluidasSpan.innerText = completedCount;
-    updateGlobalProgress();
-  }
-  function updateGlobalProgress() {
-    let total = tasks.length;
-    let completed = tasks.filter(t => t.completed).length;
-    let percent = total === 0 ? 0 : Math.round((completed/total)*100);
-    percentualSpan.innerText = `${percent}%`;
-    progressFillDiv.style.width = `${percent}%`;
-  }
-  function addTask(text) { if(!text.trim()) return; tasks.push({ id: Date.now()+Math.random(), text: text.trim(), completed: false }); renderTasks(); saveDataToLocal(); }
-  function escapeHtml(str) { return str.replace(/[&<>]/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;'}[m]; }); }
-
-  // CALENDÁRIO + LEMBRETES
-  function renderCalendar() {
-    const firstDay = new Date(currentYear, currentMonth, 1);
-    const startWeekday = firstDay.getDay(); // 0 domingo
-    const daysInMonth = new Date(currentYear, currentMonth+1, 0).getDate();
-    const grid = document.getElementById("calendarGrid");
-    grid.innerHTML = "";
-    const weekdays = ["D", "S", "T", "Q", "Q", "S", "S"];
-    weekdays.forEach(d => { let dw = document.createElement("div"); dw.className="calendar-weekday"; dw.innerText=d; grid.appendChild(dw); });
-    let emptyCells = startWeekday === 0 ? 6 : startWeekday-1;
-    for(let i=0; i<emptyCells; i++) { let empty = document.createElement("div"); empty.className="calendar-day empty"; empty.style.background="#fafcff"; grid.appendChild(empty); }
-    for(let d=1; d<=daysInMonth; d++) {
-      const dateStr = `${currentYear}-${String(currentMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-      const hasReminder = reminders[dateStr] && reminders[dateStr].length > 0;
-      const dayDiv = document.createElement("div");
-      dayDiv.className = "calendar-day";
-      if (selectedDateStr === dateStr) dayDiv.classList.add("selected");
-      dayDiv.innerHTML = `<div class="day-number">${d}</div>${hasReminder ? '<div class="reminder-dot"></div>' : ''}`;
-      dayDiv.addEventListener("click", () => { selectDate(dateStr); });
-      grid.appendChild(dayDiv);
-    }
-    if(selectedDateStr && !selectedDateStr.startsWith(`${currentYear}-${String(currentMonth+1).padStart(2,'0')}`)){
-      selectDate(`${currentYear}-${String(currentMonth+1).padStart(2,'0')}-01`);
-    } else if(!selectedDateStr) selectDate(`${currentYear}-${String(currentMonth+1).padStart(2,'0')}-01`);
-  }
-
-  function selectDate(dateStr) {
-    selectedDateStr = dateStr;
-    renderCalendar(); // re-render para highlight
-    document.getElementById("selectedDateLabel").innerText = dateStr;
-    const remList = reminders[dateStr] || [];
-    const container = document.getElementById("remindersContainer");
-    if(remList.length===0) container.innerHTML = "<i>📭 Nenhum lembrete para este dia.</i>";
-    else {
-      container.innerHTML = "";
-      remList.forEach((rem, idx) => {
-        const div = document.createElement("div"); div.className="reminder-item";
-        div.innerHTML = `<span>📌 ${escapeHtml(rem)}</span><button class="delete-reminder" data-idx="${idx}" style="background:none; border:none; color:#ef4444; cursor:pointer;"><i class="fas fa-trash"></i></button>`;
-        div.querySelector(".delete-reminder")?.addEventListener("click",()=>{ deleteReminder(dateStr, idx); });
-        container.appendChild(div);
-      });
-    }
-  }
-  function deleteReminder(dateStr, idx){
-    if(reminders[dateStr]) reminders[dateStr].splice(idx,1);
-    if(reminders[dateStr]?.length===0) delete reminders[dateStr];
-    saveDataToLocal();
-    selectDate(dateStr);
-  }
-  function addReminderToSelected() {
-    const input = document.getElementById("newReminderText");
-    const text = input.value.trim();
-    if(!text) return;
-    if(!reminders[selectedDateStr]) reminders[selectedDateStr] = [];
-    reminders[selectedDateStr].push(text);
-    saveDataToLocal();
-    input.value = "";
-    selectDate(selectedDateStr);
-    showToast("Lembrete adicionado!");
-  }
-
-  // TIMER FUNCTIONS
-  function updateTimerDisplay() {
-    const mins = Math.floor(remainingSeconds / 60);
-    const secs = remainingSeconds % 60;
-    document.getElementById("timerDisplay").innerText = `${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
-  }
-  function startTimer() {
-    if (timerInterval) clearInterval(timerInterval);
-    const minutesInput = document.getElementById("timerMinutes");
-    let mins = parseInt(minutesInput.value, 10);
-    if (isNaN(mins) || mins <= 0) mins = 25;
-    if (!isTimerRunning) { remainingSeconds = mins * 60; updateTimerDisplay(); }
-    isTimerRunning = true;
-    timerInterval = setInterval(() => {
-      if (remainingSeconds <= 0) {
-        clearInterval(timerInterval);
-        timerInterval = null;
-        isTimerRunning = false;
-        showToast("🎉 TEMPO ESGOTADO! Estudo completo! 🎉");
-        // opcional: notificação sonora? apenas mensagem elegante
-        document.getElementById("timerDisplay").innerText = "00:00";
-        return;
-      }
-      remainingSeconds--;
-      updateTimerDisplay();
-    }, 1000);
-  }
-  function resetTimer() {
-    if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
-    isTimerRunning = false;
-    const mins = parseInt(document.getElementById("timerMinutes").value,10);
-    remainingSeconds = (isNaN(mins)||mins<=0) ? 25*60 : mins*60;
-    updateTimerDisplay();
-  }
-  function showToast(msg) {
-    let toast = document.createElement("div"); toast.className="toast-msg"; toast.innerText = msg;
-    document.body.appendChild(toast);
-    setTimeout(()=>toast.remove(), 2500);
-  }
-
-  // LOCALSTORAGE
-  function saveDataToLocal() {
-    const data = { tasks, totalHours, todayHours, weekHours, lastDateTrack, reminders };
-    localStorage.setItem("smartstudy_full", JSON.stringify(data));
-  }
-  function loadDataFromLocal() {
-    const saved = localStorage.getItem("smartstudy_full");
-    if (saved) {
-      try {
-        const d = JSON.parse(saved);
-        tasks = d.tasks || [];
-        totalHours = d.totalHours || 0;
-        todayHours = d.todayHours || 0;
-        weekHours = d.weekHours || [0,0,0,0,0,0,0];
-        lastDateTrack = d.lastDateTrack || "";
-        reminders = d.reminders || {};
-      } catch(e) {}
-    }
-    if(tasks.length===0) tasks = [{ id:1, text:"Revisar algoritmos", completed:false },{ id:2, text:"Praticar JavaScript", completed:true }];
-    if(Object.keys(reminders).length===0) reminders = { [`${new Date().toISOString().slice(0,10)}`]: ["Estudar 2h de matemática"] };
-    if(weekHours.every(v=>v===0)) weekHours = [1.2, 2.5, 0.8, 3.0, 1.5, 0.5, 0.2];
-    const todayStr = new Date().toISOString().slice(0,10);
-    if (lastDateTrack !== todayStr) { todayHours = 0; lastDateTrack = todayStr; saveDataToLocal(); }
-  }
-
-  // EVENTOS & INIT
-  document.addEventListener("DOMContentLoaded", () => {
-    loadDataFromLocal();
-    updateHoursUI();
-    renderWeeklyGraph();
-    renderTasks();
-    renderCalendar();
-    if(!selectedDateStr) selectDate(`${currentYear}-${String(currentMonth+1).padStart(2,'0')}-01`);
-    document.getElementById("registrarEstudoBtn").addEventListener("click", () => {
-      let mins = parseInt(document.getElementById("minutosEstudo").value,10);
-      if(mins>0) addStudyMinutes(mins); else showToast("Insira minutos válidos");
-    });
-    document.getElementById("adicionarTarefaBtn").addEventListener("click", () => {
-      let val = document.getElementById("novaTarefaInput").value;
-      addTask(val); document.getElementById("novaTarefaInput").value = "";
-    });
-    document.getElementById("prevMonthBtn").addEventListener("click", () => { currentMonth--; if(currentMonth<0){currentMonth=11; currentYear--;} renderCalendar(); });
-    document.getElementById("nextMonthBtn").addEventListener("click", () => { currentMonth++; if(currentMonth>11){currentMonth=0; currentYear++;} renderCalendar(); });
-    document.getElementById("addReminderBtn").addEventListener("click", addReminderToSelected);
-    document.getElementById("startTimerBtn").addEventListener("click", startTimer);
-    document.getElementById("resetTimerBtn").addEventListener("click", resetTimer);
-    resetTimer(); // inicializa display
-    setInterval(() => { checkDailyReset(); saveDataToLocal(); }, 60000);
-  });
-</script>
+<script src="js/data.js"></script>
+<script src="js/dom.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/study.js"></script>
+<script src="js/tasks.js"></script>
+<script src="js/calendar.js"></script>
+<script src="js/timer.js"></script>
+<script src="js/main.js"></script>
+<script src="js/cronometro.js"></script>
 </body>
 </html>
