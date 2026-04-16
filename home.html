@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Smart Study · Gerenciador com Agenda e Cronômetro</title>
+  <!-- Google Fonts + Font Awesome 6 -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #f4f9ff;
+      font-family: 'Inter', sans-serif;
+      color: #0a2540;
+      display: flex;
+      position: relative;
+    }
+
+    /* ========= SIDEBAR AZUL ========= */
+    .sidebar {
+      width: 280px;
+      background: linear-gradient(145deg, #0b2b4f 0%, #0a2540 100%);
+      color: white;
+      height: 100vh;
+      position: sticky;
+      top: 0;
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 6px 0 20px rgba(0, 0, 0, 0.06);
+      z-index: 10;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 3rem;
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+      padding-bottom: 1.2rem;
+    }
+
+    .logo-icon {
+      background: #3b82f6;
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      box-shadow: 0 8px 14px rgba(59,130,246,0.3);
+    }
+
+    .sidebar h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #FFFFFF, #bfd9ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .sidebar nav ul {
+      list-style: none;
+    }
+
+    .sidebar nav li {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 16px;
+      margin: 8px 0;
+      border-radius: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.2s;
+      color: #e2edff;
+    }
+
+    .sidebar nav li i { width: 24px; }
+    .sidebar nav li:hover {
+      background: rgba(59,130,246,0.35);
+      transform: translateX(4px);
+    }
+
+    /* ========= MAIN ========= */
+    .main {
+      flex: 1;
+      padding: 2rem;
+      overflow-x: auto;
+    }
+
+    .header-welcome h1 { font-size: 1.9rem; font-weight: 700; }
+    .header-welcome p { color: #5b6e8c; margin-top: 6px; }
+
+    /* CARDS */
+    .cards {
+      display: flex;
+      gap: 1.8rem;
+      flex-wrap: wrap;
+      margin: 1.8rem 0;
+    }
+    .card {
+      background: white;
+      border-radius: 28px;
+      padding: 1.5rem;
+      flex: 1;
+      min-width: 200px;
+      box-shadow: 0 12px 26px -8px rgba(0, 0, 0, 0.05);
+      transition: 0.2s;
+      border: 1px solid rgba(59,130,246,0.1);
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+    .card-header h3 { font-size: 0.85rem; text-transform: uppercase; color: #5b6e8c; }
+    .card-header i { font-size: 1.6rem; color: #3b82f6; }
+    .card p { font-size: 2rem; font-weight: 800; }
+
+    /* quick study row */
+    .quick-study {
+      background: white;
+      border-radius: 28px;
+      padding: 1rem 1.8rem;
+      margin-bottom: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      gap: 1rem;
+      border: 1px solid #eef2ff;
+    }
+    .time-input {
+      background: #f8fafc;
+      padding: 0.4rem 1rem;
+      border-radius: 48px;
+      border: 1px solid #e2e8f0;
+    }
+    .time-input input {
+      border: none;
+      background: transparent;
+      width: 90px;
+      outline: none;
+      font-weight: 500;
+    }
+    .btn-primary {
+      background: #3b82f6;
+      border: none;
+      padding: 0.6rem 1.5rem;
+      border-radius: 40px;
+      font-weight: 600;
+      color: white;
+      cursor: pointer;
+      transition: 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-primary:hover { background: #2563eb; transform: scale(0.97); }
+
+    /* GRÁFICO SEMANAL MELHORADO */
+    .graph-card {
+      background: white;
+      border-radius: 28px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.02);
+    }
+    .graph-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+    }
+    .bars-container {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+    .bar-item {
+      flex: 1;
+      text-align: center;
+      min-width: 55px;
+    }
+    .bar-bg {
+      background: #e2e8f0;
+      border-radius: 20px;
+      height: 140px;
+      position: relative;
+      overflow: hidden;
+    }
+    .bar-fill {
+      background: linear-gradient(0deg, #3b82f6, #60a5fa);
+      width: 100%;
+      position: absolute;
+      bottom: 0;
+      border-radius: 20px;
+      transition: height 0.5s ease;
+    }
+    .day-label { font-weight: 600; margin-top: 8px; font-size: 0.8rem; }
+    .hours-value { font-size: 0.7rem; color: #2563eb; font-weight: 600; }
+
+    /* CALENDÁRIO GRANDE (AGENDA) */
+    .calendar-section {
+      background: white;
+      border-radius: 32px;
+      padding: 1.8rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 12px 28px -8px rgba(0,0,0,0.08);
+    }
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .calendar-nav {
+      display: flex;
+      gap: 1rem;
+    }
+    .calendar-nav button {
+      background: #eef2ff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 40px;
+      font-weight: 600;
+      cursor: pointer;
+      color: #1e3a8a;
+    }
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+      margin: 1rem 0;
+    }
+    .calendar-weekday {
+      text-align: center;
+      font-weight: 700;
+      color: #3b82f6;
+      padding: 0.8rem 0;
+      background: #f8fafc;
+      border-radius: 20px;
+    }
+    .calendar-day {
+      background: #ffffff;
+      border: 1px solid #e2edf7;
+      border-radius: 20px;
+      padding: 12px 6px;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.1s;
+      font-weight: 500;
+      position: relative;
+      min-height: 85px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .calendar-day:hover {
+      background: #eff6ff;
+      transform: scale(1.02);
+      border-color: #3b82f6;
+    }
+    .day-number {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+    .reminder-dot {
+      width: 8px;
+      height: 8px;
+      background: #3b82f6;
+      border-radius: 50%;
+      margin-top: 6px;
+    }
+    .calendar-day.selected {
+      background: #3b82f6;
+      color: white;
+      border-color: #3b82f6;
+    }
+    .selected .reminder-dot { background: white; }
+    .reminder-list {
+      margin-top: 1.5rem;
+      background: #f9fbfe;
+      border-radius: 24px;
+      padding: 1.2rem;
+    }
+    .reminder-list h4 { margin-bottom: 12px; color: #0a2540; }
+    .reminder-item {
+      display: flex;
+      justify-content: space-between;
+      background: white;
+      padding: 8px 16px;
+      border-radius: 60px;
+      margin: 8px 0;
+      border: 1px solid #e2e8f0;
+    }
+    .add-reminder {
+      display: flex;
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .add-reminder input {
+      flex: 1;
+      padding: 12px;
+      border-radius: 60px;
+      border: 1px solid #cbd5e1;
+    }
+    /* tarefas */
+    .tasks-section {
+      background: white;
+      border-radius: 28px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .add-task-form {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 1.5rem;
+    }
+    .add-task-form input {
+      flex: 2;
+      padding: 0.9rem 1.2rem;
+      border-radius: 48px;
+      border: 1px solid #e2edf7;
+    }
+    .task-list {
+      list-style: none;
+      max-height: 260px;
+      overflow-y: auto;
+    }
+    .task-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #f9fbfe;
+      margin: 10px 0;
+      padding: 10px 16px;
+      border-radius: 60px;
+    }
+    .task-left { display: flex; gap: 12px; align-items: center; flex: 1; }
+    .task-left input { accent-color: #3b82f6; width: 20px; height: 20px; }
+    .completed-task { text-decoration: line-through; color: #8ba0bc; }
+    .progress-card {
+      background: white;
+      border-radius: 28px;
+      padding: 1.5rem;
+    }
+    .progress-bar-bg {
+      background: #e2e8f0;
+      border-radius: 60px;
+      height: 12px;
+    }
+    .progress-fill {
+      background: #3b82f6;
+      width: 0%;
+      height: 100%;
+      border-radius: 60px;
+    }
+
+    /* CRONÔMETRO FLUTUANTE */
+    .timer-float {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      background: white;
+      border-radius: 48px;
+      box-shadow: 0 20px 35px -8px rgba(0, 0, 0, 0.2);
+      padding: 1rem 1.5rem;
+      width: 300px;
+      z-index: 1000;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(59,130,246,0.3);
+      transition: 0.2s;
+    }
+    .timer-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      color: #1e3a8a;
+      margin-bottom: 10px;
+    }
+    .timer-display {
+      font-size: 2rem;
+      font-weight: 800;
+      font-family: monospace;
+      letter-spacing: 2px;
+      text-align: center;
+      background: #f1f5f9;
+      padding: 8px;
+      border-radius: 40px;
+    }
+    .timer-controls {
+      display: flex;
+      gap: 8px;
+      margin: 12px 0;
+    }
+    .timer-controls input {
+      flex: 1;
+      padding: 8px;
+      border-radius: 40px;
+      border: 1px solid #cbd5e1;
+      text-align: center;
+    }
+    .timer-btn {
+      background: #3b82f6;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 32px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .timer-btn.reset { background: #475569; }
+    @media (max-width: 780px) {
+      .sidebar { width: 100%; height: auto; flex-direction: row; flex-wrap: wrap; padding: 1rem; gap: 1rem; }
+      .main { padding: 1rem; }
+      .timer-float { width: 260px; bottom: 16px; right: 16px; }
+      .calendar-grid { gap: 4px; }
+      .calendar-day { min-height: 65px; padding: 6px; }
+    }
+    footer { text-align: center; margin-top: 1rem; font-size: 0.7rem; color: #8ba0bc; }
+    .toast-msg {
+      position: fixed; bottom: 100px; right: 30px; background: #0f2b4d; color: white;
+      padding: 12px 20px; border-radius: 60px; font-weight: 500; z-index: 1100;
+      box-shadow: 0 6px 14px black(0,0,0,0.2);
+    }
+  </style>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="logo-area">
+    <div class="logo-icon"><i class="fas fa-brain"></i></div>
+    <h2>SmartStudy</h2>
+  </div>
+  <nav>
+    <ul>
+      <li><i class="fas fa-tachometer-alt"></i> Dashboard</li>
+      <li><i class="fas fa-calendar-alt"></i> Agenda</li>
+      <li><i class="fas fa-check-double"></i> Tarefas</li>
+      <li><i class="fas fa-chart-line"></i> Desempenho</li>
+    </ul>
+  </nav>
+  <div style="margin-top: auto; font-size: 0.7rem; opacity: 0.6;"><i class="fas fa-graduation-cap"></i> foco & evolução</div>
+</div>
+
+<div class="main">
+  <div class="header-welcome">
+    <h1>Olá, estudante ✨</h1>
+    <p>Organize estudos, cronômetro e agenda inteligente.</p>
+  </div>
+
+  <!-- CARDS -->
+  <div class="cards">
+    <div class="card"><div class="card-header"><h3>Total estudado</h3><i class="fas fa-clock"></i></div><p id="totalHorasDisplay">0h</p></div>
+    <div class="card"><div class="card-header"><h3>Estudo hoje</h3><i class="fas fa-sun"></i></div><p id="hojeHorasDisplay">0h</p></div>
+    <div class="card"><div class="card-header"><h3>Tarefas concluídas</h3><i class="fas fa-tasks"></i></div><p id="tarefasConcluidasCount">0</p><div class="card-sub">de <span id="totalTarefasCount">0</span></div></div>
+  </div>
+
+  <!-- Registro rápido -->
+  <div class="quick-study">
+    <div><label><i class="fas fa-hourglass-half"></i> Minutos estudados</label><div class="time-input"><input type="number" id="minutosEstudo" value="30" min="1"> <span>min</span></div></div>
+    <button class="btn-primary" id="registrarEstudoBtn"><i class="fas fa-play"></i> Registrar sessão</button>
+  </div>
+
+  <!-- GRÁFICO SEMANAL MELHORADO -->
+  <div class="graph-card">
+    <div class="graph-header"><h3><i class="fas fa-chart-line"></i> Desempenho semanal (horas)</h3><span style="background:#eef2ff; padding:4px 12px; border-radius:40px;">seg → dom</span></div>
+    <div class="bars-container" id="weeklyBars"></div>
+  </div>
+
+  <!-- CALENDÁRIO GRANDE (AGENDA) -->
+  <div class="calendar-section">
+    <div class="calendar-header">
+      <h2><i class="fas fa-calendar-alt"></i> Agenda de estudos</h2>
+      <div class="calendar-nav">
+        <button id="prevMonthBtn"><i class="fas fa-chevron-left"></i> Mês</button>
+        <button id="nextMonthBtn">Mês <i class="fas fa-chevron-right"></i></button>
+      </div>
+    </div>
+    <div id="calendarGrid" class="calendar-grid"></div>
+    <div class="reminder-list" id="reminderPanel">
+      <h4><i class="fas fa-pen-alt"></i> Lembretes para <span id="selectedDateLabel">--</span></h4>
+      <div id="remindersContainer">Nenhum lembrete.</div>
+      <div class="add-reminder">
+        <input type="text" id="newReminderText" placeholder="Escreva um lembrete...">
+        <button class="btn-primary" id="addReminderBtn"><i class="fas fa-plus"></i> Adicionar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAREFAS -->
+  <div class="tasks-section">
+    <h3><i class="fas fa-list-check"></i> Minhas tarefas</h3>
+    <div class="add-task-form"><input type="text" id="novaTarefaInput" placeholder="Nova tarefa..."><button class="btn-primary" id="adicionarTarefaBtn"><i class="fas fa-plus"></i> Adicionar</button></div>
+    <ul id="listaTarefas" class="task-list"></ul>
+  </div>
+
+  <!-- PROGRESSO -->
+  <div class="progress-card">
+    <div class="progress-info" style="display: flex; justify-content: space-between;"><span>Progresso de tarefas</span><span id="percentualProgresso">0%</span></div>
+    <div class="progress-bar-bg"><div class="progress-fill" id="progressFillBar"></div></div>
+  </div>
+  <footer>SmartStudy · dados salvos localmente | Cronômetro flutuante</footer>
+</div>
+
+<!-- CRONÔMETRO FLUTUANTE -->
+<div class="timer-float">
+  <div class="timer-header"><i class="fas fa-hourglass-start"></i> Cronômetro de foco</div>
+  <div class="timer-display" id="timerDisplay">00:00</div>
+  <div class="timer-controls">
+    <input type="number" id="timerMinutes" placeholder="Minutos" value="25" min="1" step="1">
+    <button id="startTimerBtn" class="timer-btn"><i class="fas fa-play"></i> Iniciar</button>
+    <button id="resetTimerBtn" class="timer-btn reset"><i class="fas fa-undo-alt"></i></button>
+  </div>
+</div>
+
+<script>
+  // ---------- DADOS GLOBAIS ----------
+  let tasks = [];                // {id, text, completed}
+  let totalHours = 0;
+  let todayHours = 0;
+  let weekHours = [0,0,0,0,0,0,0];
+  let lastDateTrack = "";
+
+  // calendário & lembretes: { "YYYY-MM-DD": [ "lembrete1", "lembrete2" ] }
+  let reminders = {};
+  let currentYear = new Date().getFullYear();
+  let currentMonth = new Date().getMonth(); // 0-11
+  let selectedDateStr = "";  // formato YYYY-MM-DD
+
+  // Timer
+  let timerInterval = null;
+  let remainingSeconds = 0;
+  let isTimerRunning = false;
+
+  // DOM elements
+  const totalHorasSpan = document.getElementById("totalHorasDisplay");
+  const hojeHorasSpan = document.getElementById("hojeHorasDisplay");
+  const tarefasConcluidasSpan = document.getElementById("tarefasConcluidasCount");
+  const totalTarefasSpan = document.getElementById("totalTarefasCount");
+  const listaContainer = document.getElementById("listaTarefas");
+  const progressFillDiv = document.getElementById("progressFillBar");
+  const percentualSpan = document.getElementById("percentualProgresso");
+
+  // helpers
+  function formatHours(decHours) {
+    let hrs = Math.floor(decHours);
+    let mins = Math.round((decHours - hrs) * 60);
+    if (hrs === 0 && mins === 0) return "0h";
+    if (hrs === 0) return `${mins}min`;
+    if (mins === 0) return `${hrs}h`;
+    return `${hrs}h ${mins}min`;
+  }
+
+  function updateHoursUI() {
+    totalHorasSpan.innerText = formatHours(totalHours);
+    hojeHorasSpan.innerText = formatHours(todayHours);
+  }
+
+  // GRÁFICO SEMANAL
+  function renderWeeklyGraph() {
+    const container = document.getElementById("weeklyBars");
+    const dias = ["SEG", "TER", "QUA", "QUI", "SEX", "SÁB", "DOM"];
+    const maxHoras = Math.max(...weekHours, 0.1);
+    container.innerHTML = "";
+    for (let i=0; i<weekHours.length; i++) {
+      let percent = maxHoras === 0 ? 0 : (weekHours[i] / maxHoras) * 100;
+      const barItem = document.createElement("div");
+      barItem.className = "bar-item";
+      barItem.innerHTML = `<div class="bar-bg"><div class="bar-fill" style="height: ${percent}%;"></div></div>
+        <div class="day-label">${dias[i]}</div><div class="hours-value">${weekHours[i].toFixed(1)}h</div>`;
+      container.appendChild(barItem);
+    }
+  }
+
+  // reset diário
+  function checkDailyReset() {
+    const todayStr = new Date().toISOString().slice(0,10);
+    if (lastDateTrack !== todayStr) {
+      todayHours = 0;
+      lastDateTrack = todayStr;
+      saveDataToLocal();
+      updateHoursUI();
+    }
+  }
+
+  function addStudyMinutes(minutes) {
+    if (minutes <= 0) return;
+    const hoursToAdd = minutes / 60;
+    totalHours += hoursToAdd;
+    todayHours += hoursToAdd;
+    let currentDay = new Date().getDay();
+    let weekIndex = (currentDay === 0) ? 6 : currentDay - 1;
+    weekHours[weekIndex] += hoursToAdd;
+    updateHoursUI();
+    renderWeeklyGraph();
+    saveDataToLocal();
+    showToast(`✅ +${minutes} min registrados!`);
+  }
+
+  // TAREFAS
+  function renderTasks() {
+    if (tasks.length === 0) {
+      listaContainer.innerHTML = `<li class="empty-tasks" style="text-align:center; padding:1rem;">📭 Nenhuma tarefa</li>`;
+      totalTarefasSpan.innerText = "0";
+      tarefasConcluidasSpan.innerText = "0";
+      updateGlobalProgress();
+      return;
+    }
+    let completedCount = 0;
+    listaContainer.innerHTML = "";
+    tasks.forEach(task => {
+      if (task.completed) completedCount++;
+      const li = document.createElement("li");
+      li.className = "task-item";
+      li.innerHTML = `
+        <div class="task-left">
+          <input type="checkbox" class="task-checkbox" ${task.completed ? "checked" : ""}>
+          <span class="task-text ${task.completed ? "completed-task" : ""}">${escapeHtml(task.text)}</span>
+        </div>
+        <div class="task-actions">
+          <button class="edit-task-btn" title="Editar"><i class="fas fa-pen"></i></button>
+          <button class="delete-task-btn" title="Excluir"><i class="fas fa-trash-alt"></i></button>
+        </div>
+      `;
+      const chk = li.querySelector(".task-checkbox");
+      chk.addEventListener("change", () => { task.completed = chk.checked; renderTasks(); saveDataToLocal(); });
+      li.querySelector(".edit-task-btn").addEventListener("click", () => {
+        let newT = prompt("Editar tarefa:", task.text);
+        if (newT?.trim()) { task.text = newT.trim(); renderTasks(); saveDataToLocal(); }
+      });
+      li.querySelector(".delete-task-btn").addEventListener("click", () => { tasks = tasks.filter(t => t.id !== task.id); renderTasks(); saveDataToLocal(); });
+      listaContainer.appendChild(li);
+    });
+    totalTarefasSpan.innerText = tasks.length;
+    tarefasConcluidasSpan.innerText = completedCount;
+    updateGlobalProgress();
+  }
+  function updateGlobalProgress() {
+    let total = tasks.length;
+    let completed = tasks.filter(t => t.completed).length;
+    let percent = total === 0 ? 0 : Math.round((completed/total)*100);
+    percentualSpan.innerText = `${percent}%`;
+    progressFillDiv.style.width = `${percent}%`;
+  }
+  function addTask(text) { if(!text.trim()) return; tasks.push({ id: Date.now()+Math.random(), text: text.trim(), completed: false }); renderTasks(); saveDataToLocal(); }
+  function escapeHtml(str) { return str.replace(/[&<>]/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;'}[m]; }); }
+
+  // CALENDÁRIO + LEMBRETES
+  function renderCalendar() {
+    const firstDay = new Date(currentYear, currentMonth, 1);
+    const startWeekday = firstDay.getDay(); // 0 domingo
+    const daysInMonth = new Date(currentYear, currentMonth+1, 0).getDate();
+    const grid = document.getElementById("calendarGrid");
+    grid.innerHTML = "";
+    const weekdays = ["D", "S", "T", "Q", "Q", "S", "S"];
+    weekdays.forEach(d => { let dw = document.createElement("div"); dw.className="calendar-weekday"; dw.innerText=d; grid.appendChild(dw); });
+    let emptyCells = startWeekday === 0 ? 6 : startWeekday-1;
+    for(let i=0; i<emptyCells; i++) { let empty = document.createElement("div"); empty.className="calendar-day empty"; empty.style.background="#fafcff"; grid.appendChild(empty); }
+    for(let d=1; d<=daysInMonth; d++) {
+      const dateStr = `${currentYear}-${String(currentMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+      const hasReminder = reminders[dateStr] && reminders[dateStr].length > 0;
+      const dayDiv = document.createElement("div");
+      dayDiv.className = "calendar-day";
+      if (selectedDateStr === dateStr) dayDiv.classList.add("selected");
+      dayDiv.innerHTML = `<div class="day-number">${d}</div>${hasReminder ? '<div class="reminder-dot"></div>' : ''}`;
+      dayDiv.addEventListener("click", () => { selectDate(dateStr); });
+      grid.appendChild(dayDiv);
+    }
+    if(selectedDateStr && !selectedDateStr.startsWith(`${currentYear}-${String(currentMonth+1).padStart(2,'0')}`)){
+      selectDate(`${currentYear}-${String(currentMonth+1).padStart(2,'0')}-01`);
+    } else if(!selectedDateStr) selectDate(`${currentYear}-${String(currentMonth+1).padStart(2,'0')}-01`);
+  }
+
+  function selectDate(dateStr) {
+    selectedDateStr = dateStr;
+    renderCalendar(); // re-render para highlight
+    document.getElementById("selectedDateLabel").innerText = dateStr;
+    const remList = reminders[dateStr] || [];
+    const container = document.getElementById("remindersContainer");
+    if(remList.length===0) container.innerHTML = "<i>📭 Nenhum lembrete para este dia.</i>";
+    else {
+      container.innerHTML = "";
+      remList.forEach((rem, idx) => {
+        const div = document.createElement("div"); div.className="reminder-item";
+        div.innerHTML = `<span>📌 ${escapeHtml(rem)}</span><button class="delete-reminder" data-idx="${idx}" style="background:none; border:none; color:#ef4444; cursor:pointer;"><i class="fas fa-trash"></i></button>`;
+        div.querySelector(".delete-reminder")?.addEventListener("click",()=>{ deleteReminder(dateStr, idx); });
+        container.appendChild(div);
+      });
+    }
+  }
+  function deleteReminder(dateStr, idx){
+    if(reminders[dateStr]) reminders[dateStr].splice(idx,1);
+    if(reminders[dateStr]?.length===0) delete reminders[dateStr];
+    saveDataToLocal();
+    selectDate(dateStr);
+  }
+  function addReminderToSelected() {
+    const input = document.getElementById("newReminderText");
+    const text = input.value.trim();
+    if(!text) return;
+    if(!reminders[selectedDateStr]) reminders[selectedDateStr] = [];
+    reminders[selectedDateStr].push(text);
+    saveDataToLocal();
+    input.value = "";
+    selectDate(selectedDateStr);
+    showToast("Lembrete adicionado!");
+  }
+
+  // TIMER FUNCTIONS
+  function updateTimerDisplay() {
+    const mins = Math.floor(remainingSeconds / 60);
+    const secs = remainingSeconds % 60;
+    document.getElementById("timerDisplay").innerText = `${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
+  }
+  function startTimer() {
+    if (timerInterval) clearInterval(timerInterval);
+    const minutesInput = document.getElementById("timerMinutes");
+    let mins = parseInt(minutesInput.value, 10);
+    if (isNaN(mins) || mins <= 0) mins = 25;
+    if (!isTimerRunning) { remainingSeconds = mins * 60; updateTimerDisplay(); }
+    isTimerRunning = true;
+    timerInterval = setInterval(() => {
+      if (remainingSeconds <= 0) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+        isTimerRunning = false;
+        showToast("🎉 TEMPO ESGOTADO! Estudo completo! 🎉");
+        // opcional: notificação sonora? apenas mensagem elegante
+        document.getElementById("timerDisplay").innerText = "00:00";
+        return;
+      }
+      remainingSeconds--;
+      updateTimerDisplay();
+    }, 1000);
+  }
+  function resetTimer() {
+    if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+    isTimerRunning = false;
+    const mins = parseInt(document.getElementById("timerMinutes").value,10);
+    remainingSeconds = (isNaN(mins)||mins<=0) ? 25*60 : mins*60;
+    updateTimerDisplay();
+  }
+  function showToast(msg) {
+    let toast = document.createElement("div"); toast.className="toast-msg"; toast.innerText = msg;
+    document.body.appendChild(toast);
+    setTimeout(()=>toast.remove(), 2500);
+  }
+
+  // LOCALSTORAGE
+  function saveDataToLocal() {
+    const data = { tasks, totalHours, todayHours, weekHours, lastDateTrack, reminders };
+    localStorage.setItem("smartstudy_full", JSON.stringify(data));
+  }
+  function loadDataFromLocal() {
+    const saved = localStorage.getItem("smartstudy_full");
+    if (saved) {
+      try {
+        const d = JSON.parse(saved);
+        tasks = d.tasks || [];
+        totalHours = d.totalHours || 0;
+        todayHours = d.todayHours || 0;
+        weekHours = d.weekHours || [0,0,0,0,0,0,0];
+        lastDateTrack = d.lastDateTrack || "";
+        reminders = d.reminders || {};
+      } catch(e) {}
+    }
+    if(tasks.length===0) tasks = [{ id:1, text:"Revisar algoritmos", completed:false },{ id:2, text:"Praticar JavaScript", completed:true }];
+    if(Object.keys(reminders).length===0) reminders = { [`${new Date().toISOString().slice(0,10)}`]: ["Estudar 2h de matemática"] };
+    if(weekHours.every(v=>v===0)) weekHours = [1.2, 2.5, 0.8, 3.0, 1.5, 0.5, 0.2];
+    const todayStr = new Date().toISOString().slice(0,10);
+    if (lastDateTrack !== todayStr) { todayHours = 0; lastDateTrack = todayStr; saveDataToLocal(); }
+  }
+
+  // EVENTOS & INIT
+  document.addEventListener("DOMContentLoaded", () => {
+    loadDataFromLocal();
+    updateHoursUI();
+    renderWeeklyGraph();
+    renderTasks();
+    renderCalendar();
+    if(!selectedDateStr) selectDate(`${currentYear}-${String(currentMonth+1).padStart(2,'0')}-01`);
+    document.getElementById("registrarEstudoBtn").addEventListener("click", () => {
+      let mins = parseInt(document.getElementById("minutosEstudo").value,10);
+      if(mins>0) addStudyMinutes(mins); else showToast("Insira minutos válidos");
+    });
+    document.getElementById("adicionarTarefaBtn").addEventListener("click", () => {
+      let val = document.getElementById("novaTarefaInput").value;
+      addTask(val); document.getElementById("novaTarefaInput").value = "";
+    });
+    document.getElementById("prevMonthBtn").addEventListener("click", () => { currentMonth--; if(currentMonth<0){currentMonth=11; currentYear--;} renderCalendar(); });
+    document.getElementById("nextMonthBtn").addEventListener("click", () => { currentMonth++; if(currentMonth>11){currentMonth=0; currentYear++;} renderCalendar(); });
+    document.getElementById("addReminderBtn").addEventListener("click", addReminderToSelected);
+    document.getElementById("startTimerBtn").addEventListener("click", startTimer);
+    document.getElementById("resetTimerBtn").addEventListener("click", resetTimer);
+    resetTimer(); // inicializa display
+    setInterval(() => { checkDailyReset(); saveDataToLocal(); }, 60000);
+  });
+</script>
+</body>
+</html>
