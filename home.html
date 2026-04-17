@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Smart Study · Gerenciador com Agenda e Cronômetro</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="css/style2.css">
+</head>
+<body>
+  <div class="sidebar">
+    <div class="logo-area">
+      <div class="logo-icon">
+        <img src="img/logo Smart Study.png" alt="Logo SmartStudy">
+      </div>
+      <h2>SmartStudy</h2>
+    </div>
+  
+    <nav>
+      <ul>
+        <li><i class="fas fa-tachometer-alt"></i> Dashboard</li>
+        <li><i class="fas fa-calendar-alt"></i> Agenda</li>
+        <li><i class="fas fa-check-double"></i> Tarefas</li>
+        <li><i class="fas fa-chart-line"></i> Desempenho</li>
+      </ul>
+    </nav>
+
+    <div class="cronometro-sidebar">
+      <div class="cabecalho-cronometro">
+        <i class="fas fa-hourglass-start"></i> Cronômetro
+      </div>
+      <div class="mostrador-cronometro" id="mostradorCronometro">25:00</div>
+      <div class="controles-cronometro">
+        <input type="number" id="minutosCronometro" value="25" min="1">
+        <button id="botaoIniciarCronometro" class="botao-cronometro">▶</button>
+        <button id="botaoReiniciarCronometro" class="botao-cronometro reiniciar">↻</button>
+      </div>
+    </div>
+  
+    <div style="margin-top: auto; font-size: 0.7rem; opacity: 0.6;">
+      <i class="fas fa-graduation-cap"></i> foco & evolução
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="header-welcome">
+      <h1 id="saudacao"></h1>
+      <p>Organize estudos, cronômetro e agenda inteligente.</p>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-header">
+          <h3>Total estudado</h3>
+          <i class="fas fa-clock"></i>
+        </div>
+        <p id="totalHorasDisplay">0h</p>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h3>Estudo hoje</h3>
+          <i class="fas fa-sun"></i>
+        </div>
+        <p id="hojeHorasDisplay">0h</p>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h3>Tarefas concluídas</h3>
+          <i class="fas fa-tasks"></i>
+        </div>
+        <p id="tarefasConcluidasCount">0</p>
+        <div class="card-sub">de <span id="totalTarefasCount">0</span></div>
+      </div>
+    </div>
+
+    <div class="quick-study">
+      <div>
+        <label><i class="fas fa-hourglass-half"></i> Minutos estudados</label>
+        <div class="time-input">
+          <input type="number" id="minutosEstudo" value="30" min="1"> <span>min</span>
+        </div>
+      </div>
+      <button class="btn-primary" id="registrarEstudoBtn">
+        <i class="fas fa-play"></i> Registrar sessão
+      </button>
+    </div>
+
+    <div class="graph-card">
+      <div class="graph-header">
+        <h3><i class="fas fa-chart-line"></i> Desempenho semanal (horas)</h3>
+        <span style="background:#eef2ff; padding:4px 12px; border-radius:40px;">seg → dom</span>
+      </div>
+      <div class="bars-container" id="weeklyBars"></div>
+    </div>
+
+    <div class="calendar-section">
+      <div class="calendar-header">
+        <h2><i class="fas fa-calendar-alt"></i> Agenda de estudos</h2>
+        <div class="calendar-nav">
+          <button id="prevMonthBtn"><i class="fas fa-chevron-left"></i> Mês</button>
+          <button id="nextMonthBtn">Mês <i class="fas fa-chevron-right"></i></button>
+        </div>
+      </div>
+      <div id="calendarGrid" class="calendar-grid"></div>
+      <div class="reminder-list">
+        <h4><i class="fas fa-pen-alt"></i> Lembretes para <span id="selectedDateLabel">--</span></h4>
+        <div id="remindersContainer">Nenhum lembrete.</div>
+        <div class="add-reminder">
+          <input type="text" id="newReminderText" placeholder="Escreva um lembrete...">
+          <button class="btn-primary" id="addReminderBtn">
+            <i class="fas fa-plus"></i> Adicionar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="tasks-section">
+      <h3><i class="fas fa-list-check"></i> Minhas tarefas</h3>
+      <div class="add-task-form">
+        <input type="text" id="novaTarefaInput" placeholder="Nova tarefa...">
+        <button class="btn-primary" id="adicionarTarefaBtn">
+          <i class="fas fa-plus"></i> Adicionar
+        </button>
+      </div>
+      <ul id="listaTarefas" class="task-list"></ul>
+    </div>
+
+    <div class="progress-card">
+      <div class="progress-info">
+        <span>Progresso de tarefas</span>
+        <span id="percentualProgresso">0%</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-fill" id="progressFillBar"></div>
+      </div>
+    </div>
+
+    <footer>
+      SmartStudy · dados salvos localmente | Cronômetro flutuante
+    </footer>
+  </div>
+
+  <script src="js/home.js"></script>
+  <script src="js/calendar.js"></script>
+  <script src="js/Contador _prazo.js"></script>
+  <script src="js/cronometro.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/dom.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/study.js"></script>
+  <script src="js/tasks.js"></script>
+  <script src="js/timer.js"></script>
+</body>
+</html>

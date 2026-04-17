@@ -1,0 +1,225 @@
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    html, body {
+        height: 100%;
+    }
+
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        background: #ffffff;
+        color: #1a1a1a;
+
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    main {
+        flex: 1;
+    }
+
+    .cabecalho-principal {
+        background: white;
+        border-bottom: 2px solid #ddd;
+        width: 100%;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+
+    .conteudo-cabecalho {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 10px 20px;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .logo img {
+        height: 80px;
+    }
+
+    .botao-entrar {
+        text-decoration: none;
+        background: #3498db;
+        color: white;
+        padding: 10px 25px;
+        border-radius: 6px;
+        font-size: 16px;
+        transition: 0.3s;
+    }
+
+    .botao-entrar:hover {
+        background: #2980b9;
+    }
+
+    .banner-principal {
+        width: 100%;
+        padding: 20px 0;
+    }
+
+    .Banner {
+        max-width: 1200px;
+        margin: 0 auto;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .Banner img {
+        width: 100%;
+        display: block;
+    }
+
+    .secao-servicos {
+        background: #f0f2f5;
+        width: 100%;
+        padding: 60px 0;
+    }
+
+    .container-sobre {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    .cabecalho-sobre {
+        text-align: center;
+        margin-bottom: 50px;
+    }
+
+    .cabecalho-sobre h1 {
+        font-size: 36px;
+        color: #2c3e50;
+    }
+
+    .titulo-sobre {
+        font-size: 22px;
+        margin: 10px 0;
+        color: #34495e;
+    }
+
+    .subtitulo-sobre {
+        font-size: 15px;
+        color: #666;
+        max-width: 700px;
+        margin: 0 auto 10px;
+    }
+
+    .conteudo-sobre {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+    }
+
+    .missao-sobre,
+    .compromisso-social {
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        border-left: 5px solid #3498db;
+        box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    }
+
+    .missao-sobre h2,
+    .compromisso-social h2 {
+        margin-bottom: 10px;
+        color: #2c3e50;
+    }
+
+    .missao-sobre p,
+    .compromisso-social p {
+        font-size: 14px;
+        color: #444;
+    }
+
+    .compromisso-social ul {
+        padding-left: 20px;
+    }
+
+    .compromisso-social li {
+        margin: 5px 0;
+    }
+
+    .secao-equipe {
+        background: #ffffff;
+        padding: 60px 20px;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .secao-titulo {
+        text-align: center;
+        font-size: 30px;
+        margin-bottom: 30px;
+        color: #2c3e50;
+    }
+
+    .equipe-de-lado {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+    }
+
+    .membro {
+        background: #f9f9f9;
+        padding: 20px;
+        border-radius: 12px;
+        text-align: center;
+    }
+
+
+    .foto-bolinha {
+        width: 110px;
+        height: 110px;
+        margin: 0 auto 15px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 3px solid #3498db;
+    }
+
+    .foto-bolinha img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .nome {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .cargo {
+        font-size: 14px;
+        color: #666;
+    }
+
+    footer {
+        text-align: center;
+        padding: 15px;
+        background: #3498db;
+        color: white;
+    }
+
+    @media (max-width: 768px) {
+        .conteudo-cabecalho {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .cabecalho-sobre h1 {
+            font-size: 28px;
+        }
+
+        .secao-titulo {
+            font-size: 24px;
+        }
+    }

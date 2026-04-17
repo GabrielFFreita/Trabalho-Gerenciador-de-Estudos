@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro / Login</title>
+    <link rel="stylesheet" href="css/cadastro.css">
+</head>
+<body>
+    <div class="modal">
+        <div class="caixa-modal">
+            <h2 class="titulo-modal" id="tituloModal">Cadastro</h2>
+            <div id="formCadastro">
+                <form id="formularioCadastro">
+                    <div class="grupo-formulario">
+                        <label>Nome</label>
+                        <input type="text" id="nome" class="campo-input" required>
+                    </div>
+
+                    <div class="grupo-formulario">
+                        <label>E-mail</label>
+                        <input type="email" id="email" class="campo-input" required>
+                    </div>
+
+                    <div class="grupo-formulario">
+                        <label>Senha</label>
+                        <input type="password" id="senha" class="campo-input" minlength="6" required>
+                    </div>
+
+                    <button type="submit" class="botao">Cadastrar</button>
+                </form>
+                <p class="rodape-modal">
+                    Já tem conta?
+                    <a href="#" onclick="alternarFormulario('login')">Entrar</a>
+                </p>
+            </div>
+
+            <div id="formLogin" style="display:none;">
+                <form id="formularioLogin">
+
+                    <div class="grupo-formulario">
+                        <label>E-mail</label>
+                        <input type="email" id="emailLogin" class="campo-input" required>
+                    </div>
+
+                    <div class="grupo-formulario">
+                        <label>Senha</label>
+                        <input type="password" id="senhaLogin" class="campo-input" required>
+                    </div>
+
+                    <button type="submit" class="botao">Entrar</button>
+                </form>
+
+                <p class="rodape-modal">
+                    Não tem conta?
+                    <a href="#" onclick="alternarFormulario('cadastro')">Cadastrar</a>
+                </p>
+            </div>
+
+        </div>
+    </div>
+    <script src="js/cadastro.js"></script>
+</body>
+</html>
